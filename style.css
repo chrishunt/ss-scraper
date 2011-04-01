@@ -1,0 +1,65 @@
+* {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  font-family: "minion-pro-1","minion-pro-2",Palatino,Georgia,"Times New Roman",serif;
+  color: #333333;
+  background-color: #FBFBF9;
+  text-align: left;
+}
+
+h1 {
+  text-align: center;
+  font-size: 2.1em;
+  line-height: 125%;
+  padding: 2.1em 0 0.3em 0;
+  margin: 1em 0;
+  border-bottom: 1px solid #CDCDCC;
+}
+
+p {
+  color: #080000;
+  font-size: 1.2em;
+  margin: 1em 0;
+  line-height: 1.45em;
+}
+
+a {
+  color: #080000;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+p.comment_count {
+  text-align: center;
+  font-size: 1.1em;
+}
+
+span.comment_title {
+  font-size: 1em;
+  border-radius: 3px;
+  background-color: #e8e8e6;
+  display: block; 
+  padding: 0.5em;
+  margin-bottom: 0.5em;
+}
+
+span.fragment_3 {
+  float: right;
+  text-align: right;
+}
+
+#container {
+  width: 60%;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 5em;
+}
+
+#header {
+  text-align: center;
+  font-size: 3em;
+  margin: 1em 0 1.5em 0;
+}
