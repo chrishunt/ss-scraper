@@ -1,26 +1,29 @@
-require 'scrapi'
+require 'nokogiri'
 require 'open-uri'
 
-HTML_NAME = 'messages.html'
+BASE_URL = 'http://www.sportsshooter.com'
+doc = Nokogiri::HTML(open("#{BASE_URL}/message_index.html"))
 
-# download html and convert to UTF-8
-html = ""
-html << open("http://www.sportsshooter.com/message_index.html").read.gsub('iso-8859-1','UTF-8')
+topics = doc.css('html body table tr td table tr td table tr td a')
+topics = topics[2..topics.size-2]
+# limit to 10 topics
+topics = topics[0..9]
 
-# scrape content
-scraper = Scraper.define do
-  array :tables
-  process 'table', :tables => Scraper.define {
-    array :rows
-    process 'tr', :rows => Scraper.define {
-      array :columns
-      process 'td', :columns => :text
-      result :columns
-    }
-    result :rows
-  }
-  result :tables
+topics.each do |topic|
+  topic_name = topic.content.strip
+  topic_url = "#{BASE_URL}#{topic[:href]}"
+
+  puts topic_name
+
+  doc = Nokogiri::HTML(open(topic_url))
+  comments = doc.xpath("//table[@bgcolor='#C0C0C0']")
+  comments = comments[0..comments.size-2]
+
+  puts "#{comments.size} comments.\n-----"
+
+  comments.each do |comment|
+    puts comment.content.strip
+    puts "-----"
+  end
+  puts "*******************************"
 end
-
-results = scraper.scrape(html)
-puts results[1].first.first.first.size
