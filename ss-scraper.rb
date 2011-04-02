@@ -33,23 +33,30 @@ topics.each do |topic|
 
   doc = Nokogiri::HTML(open(topic_url))
   comments = doc.xpath("//table[@bgcolor='#696969']")
+  avatars = doc.xpath("//img[@height='50']")
 
-  file.write("<p class='comment_count'><a href='#{topic_url}'>#{comments.size} comment#{'s' if comments.size > 1}</a></p>")
+  file.write("<p class='comment_count'><a href='#{topic_url}' target='blank'>#{comments.size} comment#{'s' if comments.size > 1}</a></p>")
 
-  comments.each do |comment|
+  comments.each_with_index do |comment, index|
     lines = []
     comment.content.gsub('->>','').strip.each_line do |line|
       lines << line.strip
     end
     file.write("<p>")
     file.write("<span class='comment_title'>")
-    file.write("#{lines[0].strip} | ")
+    avatar = avatars[index][:src]
+    file.write("<a href='#{BASE_URL}/#{avatar.split('/')[1]}' target='blank'><img src='#{BASE_URL}#{avatar}' /></a>")
+    file.write("<span class='username'>#{lines[0].strip}</span> | ")
     lines[1].split("|").each_with_index do |title_fragment, index|
       file.write("<span class='fragment_#{index}'> #{title_fragment.strip}</span>")
     end
     file.write("</span>")
     lines[2..lines.size-2].each do |line|
-      file.write("#{line}<br/>")
+      line.strip.split.each do |word|
+        is_link = word.include?('http://')
+        file.write("#{"<a href='#{word}' target='blank'>" if is_link}#{word}#{"</a>" if is_link} ")
+      end
+      file.write("<br/>")
     end
     file.write("</p>")
   end

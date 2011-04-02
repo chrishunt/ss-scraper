@@ -19,17 +19,17 @@ h1 {
   border-bottom: 1px solid #CDCDCC;
 }
 
-p {
-  color: #080000;
-  font-size: 1.2em;
-  margin: 1em 0;
-  line-height: 1.45em;
-}
-
 a {
   color: #080000;
   font-weight: bold;
   text-decoration: none;
+}
+
+p {
+  color: #080000;
+  font-size: 1.2em;
+  margin: 2em 0;
+  line-height: 1.45em;
 }
 
 p.comment_count {
@@ -44,11 +44,22 @@ span.comment_title {
   display: block; 
   padding: 0.5em;
   margin-bottom: 0.5em;
+  box-shadow: 2px 2px 5px #ccc;
+}
+
+img {
+  height: 30px;
+  border-radius: 44px;
+  float: left;
 }
 
 span.fragment_3 {
   float: right;
   text-align: right;
+}
+
+span.username {
+  margin-left: 0.5em;
 }
 
 #container {
