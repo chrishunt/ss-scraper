@@ -32,8 +32,7 @@ topics.each do |topic|
   file.write("<div class='topic'><h1>#{topic_name}</h1>")
 
   doc = Nokogiri::HTML(open(topic_url))
-  comments = doc.xpath("//table[@bgcolor='#C0C0C0']")
-  comments = comments[0..comments.size-2]
+  comments = doc.xpath("//table[@bgcolor='#696969']")
 
   file.write("<p class='comment_count'><a href='#{topic_url}'>#{comments.size} comment#{'s' if comments.size > 1}</a></p>")
 
@@ -44,11 +43,12 @@ topics.each do |topic|
     end
     file.write("<p>")
     file.write("<span class='comment_title'>")
-    lines.first.split("|").each_with_index do |title_fragment, index|
+    file.write("#{lines[0].strip} | ")
+    lines[1].split("|").each_with_index do |title_fragment, index|
       file.write("<span class='fragment_#{index}'> #{title_fragment.strip}</span>")
     end
     file.write("</span>")
-    lines[1..lines.size-1].each do |line|
+    lines[2..lines.size-2].each do |line|
       file.write("#{line}<br/>")
     end
     file.write("</p>")
