@@ -3,7 +3,7 @@ require 'open-uri'
 
 OUTPUT_FILE = 'output.html'
 BASE_URL = 'http://www.sportsshooter.com'
-MAX_TOPICS = 4
+MAX_TOPICS = 20
 
 file = File.open(OUTPUT_FILE, 'w')
 file.write("
@@ -19,11 +19,17 @@ file.write("
   Sports Book
 </div>")
 
-doc = Nokogiri::HTML(open("#{BASE_URL}/message_index.html"))
+puts "Max topics set to: #{MAX_TOPICS}\n\n"
+
+url = "#{BASE_URL}/message_index.html"
+print "Loading topics from: #{url}... "
+doc = Nokogiri::HTML(open(url))
+puts "done"
 
 topics = doc.css('html body table tr td table tr td table tr td a')
 topics = topics[2..topics.size-2]
 topics = topics[0..MAX_TOPICS-1]
+puts "#{topics.size} topics found.\n\n"
 
 topics.each_with_index do |topic, index|
   topic_name = topic.content.strip
@@ -31,9 +37,12 @@ topics.each_with_index do |topic, index|
 
   file.write("<div class='topic' id='topic_#{index}'><h1>#{topic_name}</h1>")
 
+  print "(#{index+1}/#{MAX_TOPICS}) Loading comments for topic: #{topic_name}... "
   doc = Nokogiri::HTML(open(topic_url))
   comments = doc.xpath("//table[@bgcolor='#696969']")
   avatars = doc.xpath("//img[@height='50']")
+  puts "done"
+  puts "#{comments.size} comments found.\n\n"
 
   file.write("<p class='topic_controls'>")
   if index > 0
@@ -81,3 +90,6 @@ file.write("
 </body>
 </html>")
 file.close
+
+puts "Output writen to: #{OUTPUT_FILE}\n\n"
+puts "Done."
