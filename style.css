@@ -28,7 +28,7 @@ a {
 p {
   color: #080000;
   font-size: 1.2em;
-  margin: 2em 0;
+  margin: 1.5em 0;
   line-height: 1.45em;
 }
 
@@ -39,22 +39,22 @@ p.topic_controls {
 }
 
 a.comment_count {
-  padding: 0 1em;
+  margin: 0 1em;
 }
 
 span.comment_title {
-  font-size: 1em;
+  font-size: 0.8em;
   border-radius: 3px;
   background-color: #e8e8e6;
   display: block; 
   padding: 0.5em;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.8em;
   box-shadow: 2px 2px 5px #ccc;
 }
 
 img {
-  height: 30px;
-  border-radius: 44px;
+  height: 25px;
+  border-radius: 3px;
   float: left;
 }
 
@@ -68,7 +68,7 @@ span.username {
 }
 
 #container {
-  width: 60%;
+  width: 705px;
   margin-left: auto;
   margin-right: auto;
   padding-bottom: 5em;

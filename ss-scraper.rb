@@ -78,6 +78,7 @@ topics.each_with_index do |topic, index|
         file.write("#{"<a href='#{word}' target='blank'>" if is_link}#{word}#{"</a>" if is_link} ")
       end
       file.write("<br/>")
+      file.write("<br/>")
     end
     file.write("</p>")
   end
