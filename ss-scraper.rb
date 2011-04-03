@@ -35,7 +35,7 @@ topics.each_with_index do |topic, index|
   topic_name = topic.content.strip
   topic_url = "#{BASE_URL}#{topic[:href]}"
 
-  file.write("<div class='topic' id='topic_#{index}'><h1>#{topic_name}</h1>")
+  file.write("\n\n<div class='topic' id='topic_#{index}'>\n<h1>#{topic_name}</h1>\n")
 
   print "(#{index+1}/#{MAX_TOPICS}) Loading comments for topic: #{topic_name}... "
   doc = Nokogiri::HTML(open(topic_url))
@@ -44,34 +44,34 @@ topics.each_with_index do |topic, index|
   puts "done"
   puts "#{comments.size} comments found.\n\n"
 
-  file.write("<p class='topic_controls'>")
+  file.write("<p class='topic_controls'>\n")
   if index > 0
-    file.write("<a href='#topic_#{index-1}'><<</a>")
+    file.write("\t<a href='#topic_#{index-1}'><<</a>")
   else
-    file.write("<<")
+    file.write("\t<<")
   end
-  file.write("<a class='comment_count' href='#{topic_url}' target='blank'>#{comments.size} comment#{'s' if comments.size > 1}</a>")
+  file.write("\n\t<a class='comment_count' href='#{topic_url}' target='blank'>\n\t\t#{comments.size} comment#{'s' if comments.size > 1}\n\t</a>")
   if index < MAX_TOPICS-1
-    file.write("<a href='#topic_#{index+1}'>>></a>")
+    file.write("\n\t<a href='#topic_#{index+1}'>>></a>")
   else
-    file.write(">>")
+    file.write("\n\t>>")
   end
-  file.write("</p>")
+  file.write("\n</p>\n")
 
   comments.each_with_index do |comment, index|
     lines = []
     comment.content.gsub('->>','').strip.each_line do |line|
       lines << line.strip
     end
-    file.write("<p>")
-    file.write("<span class='comment_title'>")
+    file.write("<p>\n")
+    file.write("\t<span class='comment_title'>\n")
     avatar = avatars[index][:src]
-    file.write("<a href='#{BASE_URL}/#{avatar.split('/')[1]}' target='blank'><img src='#{BASE_URL}#{avatar}' /></a>")
-    file.write("<span class='username'>#{lines[0].strip}</span> | ")
+    file.write("\t\t<a href='#{BASE_URL}/#{avatar.split('/')[1]}' target='blank'>\n\t\t\t<img src='#{BASE_URL}#{avatar}' />\n\t\t</a>\n")
+    file.write("\t\t<span class='username'>#{lines[0].strip}</span> | \n")
     lines[1].split("|").each_with_index do |title_fragment, index|
-      file.write("<span class='fragment_#{index}'> #{title_fragment.strip}</span>")
+      file.write("\t\t<span class='fragment_#{index}'> #{title_fragment.strip}</span>\n")
     end
-    file.write("</span>")
+    file.write("\t</span>\n")
     lines[2..lines.size-2].each do |line|
       line.strip.split.each do |word|
         link = word.match(Regexp.new 'http://.*')
@@ -82,13 +82,12 @@ topics.each_with_index do |topic, index|
         file.write("#{word} ")
         file.write("<a href='#{link}' target='blank'>#{link}</a> ") unless link.nil?
       end
-      file.write("<br/>")
-      file.write("<br/>")
+      file.write("<br /><br />\n")
     end
-    file.write("</p>")
+    file.write("</p>\n")
   end
 
-  file.write("</div>")
+  file.write("</div>\n")
 end
 
 file.write("
