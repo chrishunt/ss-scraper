@@ -58,6 +58,10 @@ topics.each_with_index do |topic, index|
   end
   file.write("\n</p>\n")
 
+  # put new comments on top
+  comments = comments.reverse
+  avatars = avatars.reverse
+
   comments.each_with_index do |comment, index|
     lines = []
     comment.content.gsub('->>','').strip.each_line do |line|
