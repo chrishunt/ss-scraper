@@ -1,12 +1,12 @@
 require 'nokogiri'
 require 'open-uri'
 
-doc = Nokogiri::HTML(open("http://www.sportsshooter.com/message_display.html?tid=38056"))
+doc = Nokogiri::HTML(open("http://www.sportsshooter.com/message_display.html?tid=37995"))
 
-comments = doc.xpath("//img[@height='50']")
+comments = doc.xpath("//table[@bgcolor='#696969']")
 
 comments.each do |comment|
-  puts comment[:src]
+  puts comment.content
   puts '-------------------------'
 end
 

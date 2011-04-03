@@ -3,7 +3,7 @@ require 'open-uri'
 
 OUTPUT_FILE = 'output.html'
 BASE_URL = 'http://www.sportsshooter.com'
-MAX_TOPICS = 20
+MAX_TOPICS = 10
 
 file = File.open(OUTPUT_FILE, 'w')
 file.write("
@@ -74,8 +74,13 @@ topics.each_with_index do |topic, index|
     file.write("</span>")
     lines[2..lines.size-2].each do |line|
       line.strip.split.each do |word|
-        is_link = word.include?('http://')
-        file.write("#{"<a href='#{word}' target='blank'>" if is_link}#{word}#{"</a>" if is_link} ")
+        link = word.match(Regexp.new 'http://.*')
+        if !link.nil?
+          link = link.to_s
+          word = word.gsub(link,'')
+        end
+        file.write("#{word} ")
+        file.write("<a href='#{link}' target='blank'>#{link}</a> ") unless link.nil?
       end
       file.write("<br/>")
       file.write("<br/>")
