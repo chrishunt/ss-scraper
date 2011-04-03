@@ -32,9 +32,14 @@ p {
   line-height: 1.45em;
 }
 
-p.comment_count {
+p.topic_controls {
+  color: #ccc;
   text-align: center;
   font-size: 1.1em;
+}
+
+a.comment_count {
+  padding: 0 1em;
 }
 
 span.comment_title {

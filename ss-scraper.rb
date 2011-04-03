@@ -3,6 +3,7 @@ require 'open-uri'
 
 OUTPUT_FILE = 'output.html'
 BASE_URL = 'http://www.sportsshooter.com'
+MAX_TOPICS = 4
 
 file = File.open(OUTPUT_FILE, 'w')
 file.write("
@@ -22,20 +23,31 @@ doc = Nokogiri::HTML(open("#{BASE_URL}/message_index.html"))
 
 topics = doc.css('html body table tr td table tr td table tr td a')
 topics = topics[2..topics.size-2]
-# limit to 10 topics
-topics = topics[0..9]
+topics = topics[0..MAX_TOPICS-1]
 
-topics.each do |topic|
+topics.each_with_index do |topic, index|
   topic_name = topic.content.strip
   topic_url = "#{BASE_URL}#{topic[:href]}"
 
-  file.write("<div class='topic'><h1>#{topic_name}</h1>")
+  file.write("<div class='topic' id='topic_#{index}'><h1>#{topic_name}</h1>")
 
   doc = Nokogiri::HTML(open(topic_url))
   comments = doc.xpath("//table[@bgcolor='#696969']")
   avatars = doc.xpath("//img[@height='50']")
 
-  file.write("<p class='comment_count'><a href='#{topic_url}' target='blank'>#{comments.size} comment#{'s' if comments.size > 1}</a></p>")
+  file.write("<p class='topic_controls'>")
+  if index > 0
+    file.write("<a href='#topic_#{index-1}'><<</a>")
+  else
+    file.write("<<")
+  end
+  file.write("<a class='comment_count' href='#{topic_url}' target='blank'>#{comments.size} comment#{'s' if comments.size > 1}</a>")
+  if index < MAX_TOPICS-1
+    file.write("<a href='#topic_#{index+1}'>>></a>")
+  else
+    file.write(">>")
+  end
+  file.write("</p>")
 
   comments.each_with_index do |comment, index|
     lines = []
