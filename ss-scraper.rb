@@ -1,7 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 
-OUTPUT_FILE = 'output.html'
+OUTPUT_FILE = 'html/index.html'
 BASE_URL = 'http://www.sportsshooter.com'
 MAX_TOPICS = 10
 
@@ -12,6 +12,7 @@ file.write("
   <head>
     <title>Sports Book</title>
     <link rel='stylesheet' type='text/css' href='style.css' />
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
   </head>
 <body>
 <div id='container'>
@@ -31,6 +32,7 @@ topics = topics[2..topics.size-2]
 topics = topics[0..MAX_TOPICS-1]
 puts "#{topics.size} topics found.\n\n"
 
+# Iterate through each topic
 topics.each_with_index do |topic, index|
   topic_name = topic.content.strip
   topic_url = "#{BASE_URL}#{topic[:href]}"
@@ -46,9 +48,9 @@ topics.each_with_index do |topic, index|
 
   file.write("<p class='topic_controls'>\n")
   if index > 0
-    file.write("\t<a href='#topic_#{index-1}'><<</a>")
+    file.write("\t<a href='#topic_#{index-1}'>&lt;&lt;</a>")
   else
-    file.write("\t<<")
+    file.write("\t&lt;&lt;")
   end
   file.write("\n\t<a class='comment_count' href='#{topic_url}' target='blank'>\n\t\t#{comments.size} comment#{'s' if comments.size > 1}\n\t</a>")
   if index < MAX_TOPICS-1
@@ -58,19 +60,20 @@ topics.each_with_index do |topic, index|
   end
   file.write("\n</p>\n")
 
-  # put new comments on top
+  # Place newer comments on top (reverse of SportsShooter.com)
   comments = comments.reverse
   avatars = avatars.reverse
 
+  # Iterate through each comment
   comments.each_with_index do |comment, index|
     lines = []
-    comment.content.gsub('->>','').strip.each_line do |line|
+    comment.content.gsub('->>','').gsub('&','&amp;').strip.each_line do |line|
       lines << line.strip
     end
     file.write("<p>\n")
     file.write("\t<span class='comment_title'>\n")
     avatar = avatars[index][:src]
-    file.write("\t\t<a href='#{BASE_URL}/#{avatar.split('/')[1]}' target='blank'>\n\t\t\t<img src='#{BASE_URL}#{avatar}' />\n\t\t</a>\n")
+    file.write("\t\t<a href='#{BASE_URL}/#{avatar.split('/')[1]}' target='blank'>\n\t\t\t<img src='#{BASE_URL}#{avatar}' alt='avatar'/>\n\t\t</a>\n")
     file.write("\t\t<span class='username'>#{lines[0].strip}</span> | \n")
     lines[1].split("|").each_with_index do |title_fragment, index|
       file.write("\t\t<span class='fragment_#{index}'> #{title_fragment.strip}</span>\n")
