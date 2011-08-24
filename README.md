@@ -3,11 +3,11 @@ Sports Shooter Scraper
 
 Presents a cleaner interface to SportsShooter.com. We will turn this:
 
-![Old](screens/old.png)
+![Old](https://github.com/huntca/ss-scraper/blob/master/screens/old.png)
 
 Into this:
 
-![New](screens/new.png)
+![New](https://github.com/huntca/ss-scraper/blob/master/screens/new.png)
 
 Usage:
 
